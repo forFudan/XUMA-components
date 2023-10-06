@@ -1,0 +1,509 @@
+\documentclass{ctexart}
+
+\usepackage{geometry}
+\geometry{
+    papersize={480mm,270mm},
+    left=0mm,
+    right=0mm,
+    top=10mm,
+    bottom=0mm,
+}
+
+\usepackage{soul}
+\usepackage{ulem}
+\usepackage{graphics}
+\usepackage{fontspec}
+\usepackage{hyperref}
+% \setmainfont{Source Han Serif SC Bold}
+\setCJKmainfont{SourceHanSerifSC-SemiBold}
+% \setCJKmainfont{SimSun}
+\setmainfont{Arial}
+% \setCJKmainfont{TH-Tshyn-P0}
+\newfontfamily{\yuhao}{YuhaoSongti.ttf}
+\newfontfamily{\simsun}{simsunb.ttf}
+
+\newcommand{\sizeone}{\fontsize{20pt}{20pt}\selectfont}       % 四号, 1.0倍行距
+\newcommand{\sizetwo}{\fontsize{14pt}{14pt}\selectfont}       % 四号, 1.0倍行距
+\newcommand{\sizethree}{\fontsize{12pt}{12pt}\selectfont}      % 小四, 1.0倍行距
+\newcommand{\sizefour}{\fontsize{10pt}{10pt}\selectfont}   % 五号, 1.0倍行距
+\newcommand{\sizefive}{\fontsize{10pt}{10pt}\selectfont}        % 小五, 1.0倍行距
+
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\definecolor{xmgray}{rgb}{0.90,0.90,0.90}
+\definecolor{xmred}{rgb}{0.96,0.90,0.90}
+\definecolor{xmgreen}{rgb}{0.90,0.96,0.90}
+\definecolor{xmblue}{rgb}{0.90,0.90,0.96}
+\definecolor{xmyellow}{rgb}{0.96,0.96,0.90}
+\definecolor{xmpurple}{rgb}{0.96,0.90,0.96}
+\definecolor{codegray}{rgb}{0.55,0.55,0.55}
+
+\usepackage{tabularray}
+\DefTblrTemplate{caption-tag}{default}{}
+\DefTblrTemplate{caption-sep}{default}{}
+\DefTblrTemplate{caption-text}{default}{\InsertTblrText{caption}}
+
+\usepackage{xparse}
+\usepackage{expl3}
+\usepackage{multicol}
+
+\ExplSyntaxOn
+\seq_new:N \l_fugen_seq
+\tl_new:N \l_bianma_tl
+
+\NewDocumentCommand {\yuhaoalone} {m} {
+    {
+        \yuhao\symbol{"#1}
+    }
+}
+
+\NewDocumentCommand {\yuhaosym} { m m o O{blue} } {
+    {
+        \yuhao\sizetwo\symbol{"#1}
+    }
+    \hspace{0.1em}
+    {
+        \tl_if_empty:nTF {#2} {} {
+            \seq_set_split:Nnn \l_fugen_seq { , } { #2 }
+            \yuhao\sizethree
+            \seq_map_variable:NNn \l_fugen_seq \i {
+                \use:n  {\hspace{0.0em}\color{black}{\symbol{"\i}}}
+            }
+        }
+    }
+    {
+        \seq_clear:N \l_fugen_seq
+        \IfNoValueTF{#3}{}{
+            \tl_set:Nn {\l_bianma_tl} {#3}
+            \normalfont\sizethree
+            \hspace{0.1em}
+            % \tl_item:Nn \l_bianma_tl 1
+            \use:n {\color{#4}{\tl_item:Nn \l_bianma_tl 2}}
+            
+        }
+        \tl_clear:N \l_bianma_tl
+    }
+    \hspace{0.1em}
+}
+
+\NewDocumentCommand {\yuhaochar} { m m o O{blue} } {
+    {
+        \yuhao\sizetwo{#1}
+    }
+    {
+        \tl_if_empty:nTF {#2} {} {
+            \seq_set_split:Nnn \l_fugen_seq { , } { #2 }
+            \yuhao\sizethree
+            \seq_map_variable:NNn \l_fugen_seq \i {
+                \use:n  {\hspace{0.0em}\color{black}{\i}}
+            }
+        }
+    }
+    {
+        \seq_clear:N \l_fugen_seq
+        \IfNoValueTF{#3}{}{
+            \tl_set:Nn {\l_bianma_tl} {#3}
+            \normalfont\sizethree
+            \hspace{0.1em}
+            % \tl_item:Nn \l_bianma_tl 1
+            \use:n {\color{#4}{\tl_item:Nn \l_bianma_tl 2}}
+            
+        }
+        \tl_clear:N \l_bianma_tl
+    }
+    \hspace{0.1em}
+}
+
+\NewDocumentCommand {\yuhaocharsym} { m m m o O{blue} } {
+    {
+        \yuhao\sizetwo{#1}
+    }
+    {
+        \tl_if_empty:nTF {#2} {} {
+            \seq_set_split:Nnn \l_fugen_seq { , } { #2 }
+            \yuhao\sizethree
+            \seq_map_variable:NNn \l_fugen_seq \i {
+                \use:n  {\hspace{0.0em}\color{black}{\i}}
+            }
+        }
+    }
+    {
+        \tl_if_empty:nTF {#3} {} {
+            \seq_set_split:Nnn \l_fugen_seq { , } { #3 }
+            \yuhao\sizethree
+            \seq_map_variable:NNn \l_fugen_seq \i {
+                \use:n  {\hspace{0.0em}\color{black}{\symbol{"\i}}}
+            }
+        }
+    }
+    {
+        \seq_clear:N \l_fugen_seq
+        \IfNoValueTF{#4}{}{
+            \tl_set:Nn {\l_bianma_tl} {#4}
+            \normalfont\sizethree
+            \hspace{0.1em}
+            % \tl_item:Nn \l_bianma_tl 1
+            \use:n {\color{#5}{\tl_item:Nn \l_bianma_tl 2}}
+            
+        }
+        \tl_clear:N \l_bianma_tl
+    }
+    \hspace{0.1em}
+}
+
+\NewDocumentCommand {\yuhaocharsongsym} { m m m m o O{blue} } {
+    {
+        \yuhao\sizetwo{#1}
+    }
+    {
+        \tl_if_empty:nTF {#2} {} {
+            \seq_set_split:Nnn \l_fugen_seq { , } { #2 }
+            \yuhao\sizethree
+            \seq_map_variable:NNn \l_fugen_seq \i {
+                \use:n  {\hspace{0.0em}\color{black}{\i}}
+            }
+        }
+    }
+    {
+        \tl_if_empty:nTF {#3} {} {
+            \seq_set_split:Nnn \l_fugen_seq { , } { #3 }
+            \simsun\sizethree
+            \seq_map_variable:NNn \l_fugen_seq \i {
+                \use:n  {\hspace{0.0em}\color{black}{\simsun{\i}}}
+            }
+        }
+    }
+    {
+        \tl_if_empty:nTF {#4} {} {
+            \seq_set_split:Nnn \l_fugen_seq { , } { #4 }
+            \yuhao\sizethree
+            \seq_map_variable:NNn \l_fugen_seq \i {
+                \use:n  {\hspace{0.0em}\color{black}{\symbol{"\i}}}
+            }
+        }
+    }
+    {
+        \seq_clear:N \l_fugen_seq
+        \IfNoValueTF{#5}{}{
+            \tl_set:Nn {\l_bianma_tl} {#5}
+            \normalfont\sizethree
+            \hspace{0.1em}
+            % \tl_item:Nn \l_bianma_tl 1
+            \use:n {\color{#6}{\tl_item:Nn \l_bianma_tl 2}}
+            
+        }
+        \tl_clear:N \l_bianma_tl
+    }
+    \hspace{0.1em}
+}
+
+\ExplSyntaxOff
+
+\begin{document}
+    \pagestyle{empty}
+    \centering
+    {
+        \fontsize{32pt}{32pt}\selectfont 宇浩·星陳·字根鍵位圖\\[0.5cm]
+    }
+    {
+        \fontsize{16pt}{16pt}\selectfont \uline{宇浩}·\uline{星陳}方案基於\uline{宇浩拆分}.相似字根在鍵盤上分組排佈.\\
+        代表字根右側爲形近字根,右上方爲繁簡\uline{一級簡碼字}. \\
+        官方网站: https://zhuyuhao.com/yustar/\hspace{1.5cm}QQ讨论群: 735728797\hspace{1.5cm}Telegram讨论群: https://t.me/yuhaoim\\
+            [0.5cm]
+    }
+    \begin{tblr}{
+        vlines,
+        % colspec        = {clclclclclclclclclc},
+        column{1, 3, 5, 7, 9, 11, 13, 15, 17, 19}   = {m, wd= 111pt},
+        column{2, 4, 6, 8, 10, 12, 14, 16, 18}   = {m, wd= 0pt},
+        % column{10} = {m, wd= 10pt},
+        row{1}         = {2em, abovesep=10pt,belowsep=5pt},
+        row{2}       = {2em, abovesep=5pt,belowsep=10pt},
+        % row{3}     = {2em, abovesep=0pt,belowsep=2pt},
+        cell{1-2}{1, 3, 5, 7 , 9} = {bg=xmyellow},
+        cell{1-2}{11, 13, 15, 17, 19} = {bg=xmpurple},
+    }
+    \cline{1, 3, 5, 7, 9, 11, 13, 15, 17, 19}
+    
+    \centering \sizeone Q　　　着 & & 
+    \centering \sizeone W　　　然 & & 
+    \centering \sizeone E　　　有 & & 
+    \centering \sizeone R　　　人 & &
+    \centering \sizeone T　　於·这 & & 
+    \centering \sizeone Y　　　那 & & 
+    \centering \sizeone U　　爲·点 & & 
+    \centering \sizeone I　　　小 & & 
+    \centering \sizeone O　　　大 & & 
+    \centering \sizeone P　　　要 \\
+
+    % Q
+    \centering \yuhaochar{自}{}[Qi][brown] \yuhaochar{身}{}[Qs] \par 
+    \yuhaocharsym{丷}{䒑}{E286,E287}[Qk][purple] \yuhaocharsym{丬}{}{}[Qq] \par
+    \yuhaocharsym{羊}{⺶,⺷}{}[Qy] \yuhaochar{米}{}[Qm] \par 
+    \yuhaochar{虫}{}[Qc] \par & & 
+    % W
+    \centering 
+    \yuhaocharsym{月}{}{E2C3,E2C4}[Wy] \yuhaosym{E2C1}{E2C2}[Wb] \par 
+    \yuhaochar{囗}{}[Ww] \yuhaocharsym{凵}{}{}[Wk] \par
+    \yuhaocharsym{屮}{}{E2E5}[Wc] 
+    \yuhaocharsym{丩}{丱}{}[Wj] \par 
+    \yuhaocharsym{馬}{}{E079}[Wm] \yuhaocharsym{儿}{}{E208,E209}[Wr][brown] \par & & 
+    % E
+    \centering \yuhaochar{亻}{}[Er] \yuhaochar{隹}{}[Eh] \yuhaosym{E250}{}[Ez] \par
+    \yuhaochar{几}{}[Ej] \yuhaochar{殳}{}[Es] \yuhaochar{風}{}[Ef] \par  
+    \yuhaocharsym{乚}{}{E2F5,E2F6,E2F7}[Ei] \yuhaocharsym{母}{彑}{E02F,E030}[Em] \par
+    && 
+    % R
+    \centering \yuhaochar{人}{}[Re][brown] \yuhaochar{合}{}[Rh] \yuhaochar{僉}{}[Rq] \par
+    \yuhaocharsym{心}{}{}[Ri][brown] \yuhaocharsym{忄}{}{}[Rx] \par
+    \yuhaocharsym{咼}{冎}{E1B5}[Rk] \yuhaochar{骨}{}[Rg] \par
+    \yuhaochar{九}{}[Rj] \yuhaochar{瓦}{}[Rw] \par
+       & & 
+    % T
+    \centering \yuhaochar{方}{}[Tf] \yuhaocharsym{亦}{}{E1F1}[Ty] \yuhaocharsym{亡}{}{E291}[Tw] \par
+    \yuhaochar{亥}{}[Th] \yuhaocharsym{豕}{}{E068}[Ts] \par
+    \yuhaochar{文}{}[Te][brown] \yuhaocharsym{夂}{}{E082}[Tp] \yuhaochar{金}{}[Tj] \par
+    \yuhaochar{门}{}[Rm] & & 
+    % Y
+    \centering \yuhaocharsym{乙}{}{E2B4,E2B5,E2B6,E2B7}[Yi][brown] \par
+    \yuhaochar{飛}{}[Yf] & & 
+    % U
+    \centering  \yuhaochar{長}{}[Ic] \yuhaochar{镸}{}[Ic] \yuhaochar{髟}{}[Ib] \par
+    \yuhaocharsym{爪}{}{E087}[Uz]  \yuhaochar{瓜}{}[Ug] \par
+    \yuhaochar{罒}{}[Vw] \yuhaochar{皿}{}[Vm] \par
+    \yuhaocharsym{丨}{}{}[Us] \yuhaocharsym{卜}{}{E189,E18A,E18B}[Ub] \par
+    \yuhaochar{鹵}{}[Ul] \yuhaocharsym{虎}{}{E199,E19A}[Uh] \par
+    \yuhaosym{E1AB}{E1AC}[Us] \yuhaochar{非}{}[Jf] \yuhaochar{其}{}[Iq] \par
+    \yuhaochar{山}{}[Us] \yuhaochar{巾}{}[Uj] \yuhaochar{舟}{}[Go][brown] && 
+    % I
+    \centering 
+    \yuhaochar{宀}{}[Tb] \yuhaochar{穴}{}[Tx] \par
+    \yuhaocharsym{小}{}{E183,E184}[Iv][purple] \yuhaocharsym{尚}{}{E1A7,E1A8}[Is] \par
+    \yuhaochar{火}{}[Ih]  \yuhaochar{灬}{}[Ib] \yuhaocharsym{业}{}{}[Ie][brown] \par
+    \yuhaocharsym{二}{}{E24B,E24C,E24D}[Ir][brown] \yuhaochar{亍}{}[Ic] \par
+    & & 
+    % O
+    \centering  \yuhaochar{大}{}[Od] \yuhaocharsym{夫}{}{}[Of] \yuhaocharsym{𡗗}{}{}[Op] \par  
+    \yuhaocharsym{己}{}{E033}[Oi] \yuhaochar{已}{}[Ov][purple] \par
+    \yuhaocharsym{巳}{}{E2EE}[Os] \yuhaochar{巴}{}[Ob] \par
+    \yuhaochar{之}{}[Oz] \yuhaochar{辶}{}[Oc] \par 
+    \yuhaochar{也}{}[Oe][brown] \yuhaochar{乜}{}[Om] \par
+    \yuhaocharsym{糸}{}{E021}[Os] \yuhaochar{钅}{}[Oj] \par 
+    & &
+    % P
+    \centering \yuhaocharsym{西}{覀,襾}{}[Px] \yuhaochar{酉}{}[Py] \par
+    \yuhaochar{止}{}[Pi][brown] \yuhaochar{齒}{}[Pc] \yuhaocharsym{足}{𧾷}{}[Pz] \yuhaocharsym{龰}{}{}[Pz] \par 
+    \yuhaocharsym{牛}{牜,⺧}{}[Pn] \yuhaochar{生}{}[Ps] \yuhaochar{工}{}[Pg] \yuhaochar{阝}{}[Pf] \par
+   
+    \\
+    \cline{1, 3, 5, 7, 9, 11, 13, 15, 17, 19}
+    \end{tblr}
+
+    \vspace{5mm}
+
+    \begin{tblr}{
+        vlines,
+        column{1, 3, 5, 7, 9, 11, 13, 15, 17, 19}   = {m, wd= 111pt},
+        column{2, 4, 6, 8, 10, 12, 14, 16, 18}   = {m, wd= 0pt},
+        % column{10} = {m, wd= 10pt},
+        row{1}         = {2em, abovesep=10pt,belowsep=5pt},
+        row{2}       = {2em, abovesep=5pt,belowsep=10pt},
+        % row{3}     = {2em, abovesep=0pt,belowsep=2pt},
+        cell{1-2}{1, 3, 5, 7, 9} = {bg=xmgreen},
+        cell{1-2}{11, 13, 15, 17} = {bg=xmblue},
+        cell{1-2}{19} = {bg=xmgray},
+    }
+    \cline{1, 3, 5, 7, 9, 11, 13, 15, 17, 19}
+
+    \centering \sizeone A　　　可 & & 
+    \centering \sizeone S　　　而 & & 
+    \centering \sizeone D　　　的 & & 
+    \centering \sizeone F　　　一 & & 
+    \centering \sizeone G　　　我 & & 
+    \centering \sizeone H　　　地 & & 
+    \centering \sizeone J　　　是 & & 
+    \centering \sizeone K　　　了 & & 
+    \centering \sizeone L　　　中 & & 
+    \centering \sizeone ;　　　 \\
+
+    % \centering    & & 
+    % \centering   & & 
+    % \centering  & & 
+    % \centering  & & 
+    % \centering  & & 
+    % \centering  & & 
+    % \centering   & & 
+    % \centering   & & 
+    % \centering \\
+    
+    % A
+    \centering  \yuhaocharsym{木}{朩}{E0A2}[Am] \yuhaochar{來}{}[Al] \par
+    \yuhaocharsym{高}{}{E1F7,E1F6,E1F5}[Ag] \yuhaocharsym{亠}{}{}[At] \par
+    \yuhaochar{卩}{}[Fj] \yuhaochar{㔾}{}[Fj] \par
+    \yuhaochar{丁}{}[Ad] \yuhaosym{E001}{E002,E003}[Ak] \par
+    &&
+ 
+    % S
+    \centering \yuhaocharsym{卄}{廾,卝,龷}{E245}[So][brown] \yuhaocharsym{卅}{}{E242}[Ss] \par
+    \yuhaochar{革}{}[Sg] \yuhaochar{世}{}[Si][brown] \par
+    \centering \yuhaochar{而}{}[Tr][brown]  \yuhaochar{面}{}[Tm] \par
+    \yuhaochar{用}{}[Sy] \yuhaochar{力}{}[Sl] \yuhaocharsym{乂}{}{E2C9}[Si][brown] \par 
+    &&
+
+    %D    
+    \centering \yuhaochar{由}{}[Do][brown] \yuhaochar{申}{}[Ds] \yuhaocharsym{电}{}{E15B,E150}[Dd]     \yuhaocharsym{車}{叀}{E0CF}[Dc] \yuhaocharsym{丰}{}{E07B}[Df] \par
+    \yuhaochar{白}{}[Db] \yuhaocharsym{臼}{}{E229}[Di][brown] \yuhaocharsym{鬼}{}{E2D9}[Dg] \par
+    \yuhaocharsym{向}{}{E22F,E230}[Dx] \yuhaochar{𠂤}{}[Dd] \par
+    \yuhaocharsym{鳥}{}{E23A}[Dn] \yuhaocharsym{烏}{}{E318}[Dw] \par
+    \yuhaocharsym{戶}{}{}[Dh] \yuhaocharsym{斤}{}{E090, E084}[Dj] \par
+    \yuhaocharsym{片}{}{E27C}[Dp] \yuhaocharsym{爿}{}{E2F3}[Dq] \par 
+    \yuhaochar{門}{}[Rm] \yuhaochar{鬥}{}[Du] \yuhaochar{至}{}[Dz] \yuhaochar{讠}{}[Dy] &&
+    
+    %F
+    \centering \yuhaochar{一}{}[Fi][brown] \yuhaocharsym{尤}{}{}[Co][brown] \yuhaocharsym{尢}{}{}[Co][brown] \par
+    \yuhaochar{未}{}[Fw] \yuhaochar{末}{}[Fm] \par
+    \yuhaocharsym{手}{龵}{E278}[Fs] \yuhaocharsym{扌}{}{}[Fs] \par
+    &&
+
+    %G
+    \centering \yuhaochar{丿}{}[Gp] \yuhaosym{E31A}{}[Gw] 
+    \yuhaosym{E2D2}{E2D3}[Gy] \yuhaochar{艮}{}[Gg] \par
+    \yuhaochar{不}{}[Su][brown] \yuhaocharsym{竹}{}{E201,E202,E203}[Gz] \yuhaochar{气}{}[Gq] \par
+    \yuhaocharsym{乃}{}{E2AA}[Gn] \yuhaochar{廴}{}[Gy] \par
+    \yuhaochar{十}{}[Gi][brown] \yuhaochar{黑}{}[Gh] \par
+    \yuhaocharsym{黽}{}{E12D}[Gm] \par
+    &&
+
+    %H
+    \centering \yuhaochar{土}{耂}[Ht] \yuhaocharsym{士}{}{E0E4}[Hs] \yuhaocharsym{龶}{}{}[Hs] \par
+    \yuhaochar{走}{}[Hz] \yuhaocharsym{壴}{}{}[Hz] \par
+    \yuhaocharsym{匚}{}{}[Hf] \yuhaocharsym{臣}{𦣝}{E25A}[He][brown] \yuhaochar{牙}{}[Hy] \par
+    \yuhaocharsym{寸}{}{}[Hc] \yuhaosym{E011}{}[Hc] \yuhaocharsym{丂}{}{E253,E254}[Hk] \par
+    \yuhaochar{犬}{犭}[Hq] \yuhaocharsym{户}{戸}{}[Th] \par 
+    &&
+    
+    %J
+    \centering 
+    \yuhaocharsym{日}{}{E121}[Ur] \yuhaochar{曰}{}[Uy] \par
+    \yuhaochar{早}{}[Uz] \yuhaochar{古}{}[Jg] \par
+    \yuhaochar{目}{}[Jm] \yuhaocharsym{且}{}{E192}[Jq] \par
+    \yuhaochar{貝}{}[Jb] \yuhaochar{見}{}[Jj] \par
+    \yuhaochar{矢}{}[Ji][brown] \yuhaochar{缶}{}[Jf] \par
+    \yuhaocharsym{上}{}{E153,E154}[Jv][purple] \yuhaocharsym{下}{}{E00F}[Jx] \par
+    \yuhaochar{王}{}[Jw] \yuhaocharsym{示}{}{E0F7,E28C}[Js] \par
+    
+    &&
+
+    %K
+    \centering \yuhaochar{了}{}[Ke][brown] \yuhaochar{子}{}[Kz] \yuhaochar{予}{}[Ky] \par
+    \yuhaochar{弋}{}[Ki][brown] \yuhaochar{戈}{}[Kg] \yuhaochar{戊}{}[Kw] \par
+    \yuhaochar{立}{}[Kl] \yuhaochar{辛}{}[Kx] \par 
+    \yuhaocharsym{丶}{}{E1C3}[Kd] \yuhaocharsym{八}{}{E264}[Ka][brown] \par
+    \yuhaochar{入}{}[Kr] \yuhaochar{食}{}[Ks] \par
+    \yuhaocharsym{卯}{}{E26C,E26D,E26E,E26F,E270}[Km] \par \yuhaosym{E12B}{E12A}[Ka][brown] 
+    \yuhaocharsym{纟}{}{E2A3}[Kj] &&
+
+    %L
+    \centering \yuhaochar{丌}{}[Lj] \yuhaochar{兀}{}[Lw] \yuhaochar{耳}{}[Le] \par
+    \yuhaocharsym{口}{〇}{E161}[Lv][brown] \yuhaocharsym{舌}{}{E233}[Ls] \par
+    \yuhaochar{三}{}[La][brown] \yuhaochar{川}{}[Lc] \yuhaocharsym{巛}{}{E2AD}[Jc] \par
+    \par &&
+    %;
+    \centering\sizethree 二選
+    \\
+    
+    \cline{1, 3, 5, 7, 9, 11, 13, 15, 17, 19}
+    \end{tblr}
+
+    \vspace{5mm}
+
+    \begin{tblr}{
+        vlines,
+        column{1, 3, 5, 7, 9, 11, 13, 15, 17, 19}   = {m, wd= 111pt},
+        column{2, 4, 6, 8, 10, 12, 14, 16, 18}   = {m, wd= 0pt},
+        % column{10} = {m, wd= 10pt},
+        row{1}         = {2em, abovesep=10pt,belowsep=5pt},
+        row{2}       = {2em, abovesep=5pt,belowsep=10pt},
+        % row{3}     = {2em, abovesep=0pt,belowsep=2pt},
+        % cell{1-2}{1} = {bg=xmgray},
+        cell{1-2}{3, 5, 7, 9} = {bg=xmred},
+        cell{1-2}{11, 13} = {bg=xmyellow},
+        cell{1-2}{1, 15, 17, 19} = {bg=xmgray},
+    }
+    \cline{1, 3, 5, 7, 9, 11, 13, 15, 17, 19}
+
+    \centering \sizeone Z　　　 & & 
+    \centering \sizeone X　　　多 & & 
+    \centering \sizeone C　　得·好  & & 
+    \centering \sizeone V　　原·里 & & 
+    \centering \sizeone B　　這·对 & & 
+    \centering \sizeone N　　　能 & &
+    \centering \sizeone M　　　和 & &
+    \centering \sizeone ,　　　 & &
+    \centering \sizeone .　　　 & &
+    \centering \sizeone /　　　 \\
+    
+    % Z
+    \centering 反查引导 \par 重复上屏 & & 
+    % X
+    \centering  \yuhaocharsym{冖}{}{E306,E307}[Xm] \yuhaochar{欠}{}[Xq]  \yuhaochar{饣}{}[Xs] \yuhaochar{夕}{}[Xx] \yuhaochar{鱼}{}[Xv][brown] \par
+    \yuhaocharsym{七}{}{E005,E006}[Xi][brown] \yuhaochar{车}{}[Xj] \par 
+    \yuhaochar{衤}{}[Xy] & & 
+    % C
+    \centering \yuhaocharsym{冂}{}{E146,E147}[Ck] \yuhaochar{贝}{}[Cb] \yuhaochar{见}{}[Cj] \par
+    \yuhaochar{冊}{}[Ce] \yuhaochar{雨}{}[Cy] \par
+    \yuhaocharsym{彳}{}{E236}[Cc] \yuhaocharsym{彡}{}{E268,E269}[Cp] \par
+    \yuhaochar{女}{}[Cn] \par
+      & & 
+    % V
+    \centering
+    \yuhaochar{石}{丆}[Vs] \yuhaochar{厂}{}[Vh] \par
+    \yuhaochar{田}{}[Vt] \yuhaochar{甲}{}[Vj] \yuhaocharsym{里}{}{}[Vl] \par
+    \yuhaochar{魚}{}[Vv][brown] \yuhaochar{禺}{}[Vy] \par   
+    \yuhaochar{习}{}[Vx] \par
+    & & 
+    % B
+    \centering
+    \yuhaocharsym{又}{マ,ス,癶}{E027}[Bo][brown] \yuhaochar{皮}{}[Bp] \par
+    \yuhaocharsym{コ}{ユ}{}[Bo][brown] \yuhaochar{弓}{}[Bg] \yuhaocharsym{尸}{}{E02A,E02B}[Bs] \par 
+    \yuhaocharsym{彐}{肀}{E2DF}[Bj] \yuhaocharsym{丑}{}{}[Bc] \yuhaochar{马}{}[Bm] \par
+    \yuhaosym{E045}{}[Bw] \yuhaocharsym{韋}{}{}[Bw] \par
+    \yuhaochar{言}{}[By] \yuhaosym{E035}{}[Bs] 
+    \par \par \par & & 
+    % N
+    \centering \yuhaocharsym{水}{氺}{E149,E14B}[Ns] \yuhaocharsym{氵}{}{E101,E102}[Ns] \par 
+    \yuhaochar{幺}{}[Na] \yuhaochar{厶}{}[Na] \par 
+    \yuhaochar{匕}{}[Nb] \yuhaochar{长}{}[Nc] \par 
+    \yuhaochar{甫}{}[Nf] \yuhaocharsym{干}{}{E0F8}[Ng] \par
+    & & 
+    % M
+    \centering \yuhaochar{广}{}[Mg] \yuhaochar{疒}{}[Mb] \par
+    \yuhaochar{麻}{}[Ma][brown] \yuhaocharsym{鹿}{}{E107}[Ml] \par
+    \yuhaochar{辰}{}[Mc] \yuhaosym{E0C4}{}[Mc]\par
+    \yuhaocharsym{千}{}{E2D7}[Mq] \yuhaochar{壬}{}[Mr] \yuhaocharsym{禾}{}{E226}[Mh] \par \yuhaochar{夭}{}[My] \yuhaocharsym{毛}{}{}[Mm] \yuhaochar{豸}{}[Vz] \par 
+    \yuhaocharsym{鸟}{}{E30B}[Mn] \yuhaochar{乌}{}[Mw] \par
+    \yuhaochar{刀}{}[Md] \yuhaochar{刂}{}[Md] & & 
+    \centering\sizethree & & 
+    \centering\sizethree & & 
+    \centering\sizethree 特殊符號 \par 拆分查詢
+    \\
+
+    \cline{1, 3, 5, 7, 9, 11, 13, 15, 17, 19}
+    \end{tblr}
+
+    \vspace{2mm}
+
+    % {
+        \fontsize{14pt}{14pt} \selectfont 
+    % 宇浩输入法维护委员会　2023年5月12日 \\
+    % 官方网站:https://zhuyuhao.com/yuhao/ \\
+    % QQ讨论群:735728797
+    % }
+
+    \begin{multicols}{2}
+        單根字: Aaa\_ 兩根字: ABba 三根字: ABCc 多根字: ABCZ \\
+        GB0:415 \uline{國字}:147 GBK:4982 當量:1.289 簡體動重:0.079\% 繁體動重:0.1085\% 簡繁混動 0.1495\% \\
+        \vspace{12pt}
+    \vspace{12pt}
+    \end{multicols}
+
+\end{document}
